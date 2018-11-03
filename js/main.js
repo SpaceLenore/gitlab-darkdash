@@ -3,8 +3,8 @@
 const createIssueBox = (issue, target) => {
     let targetDiv = document.getElementById(target);
     let issuebox = document.createElement("div");
-    let isssueIdName = document.createElement("h3");
-    let assignee = document.createElement("h4");
+    let isssueIdName = document.createElement("h2");
+    let assignee = document.createElement("h3");
 
 
     issuebox.classList = "issuebox " + target;
