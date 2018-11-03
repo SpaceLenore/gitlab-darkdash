@@ -16,12 +16,13 @@ const createIssueBox = (issue, target) => {
         let left = document.createElement("span");
         let right = document.createElement("span");
 
-        left.innerText = issue.project_id + "#" + issue.iid;
+
+        left.innerText = config.projectMap[issue.project_id] + "#" + issue.iid;
         right.innerText = issue.assignee.name;
         assignee.appendChild(left);
         assignee.appendChild(right);
     } else {
-        assignee.innerText = issue.project_id + "#" + issue.iid;
+        assignee.innerText = config.projectMap[issue.project_id] + "#" + issue.iid;
     }
 
     issuebox.appendChild(isssueIdName);
@@ -54,11 +55,29 @@ const fetchLabelIssues = () => {
 
 const recursiveLoader = () => {
     setTimeout(function () {
-        console.log("RELOADING");
         fetchLabelIssues();
         recursiveLoader();
     }, 1000*config.refreshRate);
 }
 
-fetchLabelIssues();
+const recursiveProjectLoader = () => {
+    setTimeout(function () {
+        fetchProjects();
+    }, 1000*config.refreshProjectRate);
+}
+
+const fetchProjects = () => {
+    fetch(config.apiURL + "/groups/" + config.group + "/projects?&simple")
+    .then((response) => {
+        return response.json();
+    }).then((projects) => {
+        projects.forEach((project) => {
+            config.projectMap[project.id] = project.name;
+        });
+        fetchLabelIssues();
+    });
+};
+
+fetchProjects();
 recursiveLoader();
+recursiveProjectLoader();

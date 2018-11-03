@@ -7,4 +7,6 @@ const config = {
     labels: ["critical", "high", "medium", "low"],
     refreshRate: 30,
     issues: [],
+    refreshProjectRate: 300,
+    projectMap: {},
 };
